@@ -1,29 +1,29 @@
-#include "Arduino.h"
+#include <Arduino.h>
 #include "MotorLib.h"
 #include "MonoPWMPin.h"
 #include "EnablePWMPin.h"
 #include "DualPWMPin.h"
 
-#define MONO_DIR_PIN 5
 #define MONO_PWM_PIN 6
+#define MONO_DIR_PIN 7
 
-#define ENABLE_EN_PIN 9
-#define ENABLE_IN1_PIN 8
-#define ENABLE_IN2_PIN 7
+#define DUAL_IN1_PIN 9
+#define DUAL_IN2_PIN 10
 
-#define DUAL_A1A_PIN 10
-#define DUAL_A1B_PIN 11
+#define ENABLE_EN_PIN 11
+#define ENABLE_IN1_PIN 12
+#define ENABLE_IN2_PIN 13
 
 // Uncomment one of the lines below to choose your motor driver
-// MonoPWMPin mono(MONO_DIR_PIN, MONO_PWM_PIN);                         // example compatible motor driver: MD10C 
+MonoPWMPin mono(MONO_DIR_PIN, MONO_PWM_PIN);                         // example compatible motor driver: MD10C 
+// DualPWMPin dual(DUAL_IN1_PIN, DUAL_IN2_PIN);                         // example compatible motor driver: L9110N
 // EnablePWMPin enable(ENABLE_EN_PIN, ENABLE_IN1_PIN, ENABLE_IN2_PIN);  // example compatible motor driver: L298N
-DualPWMPin dual(DUAL_A1A_PIN, DUAL_A1B_PIN);                         // example compatible motor driver: L9110N
 
 // Then use that motor driver to create a MOTOR object
 // Uncomment one of the lines below to choose your motor driver
-// MOTOR motor(&mono);      // example compatible motor driver: MD10C
+MOTOR motor(&mono);      // example compatible motor driver: MD10C
+// MOTOR motor(&dual);      // example compatible motor driver: L9110N
 // MOTOR motor(&enable);    // example compatible motor driver: L298N
-MOTOR motor(&dual);      // example compatible motor driver: L9110N
 
 void setup() {
   motor.init();
