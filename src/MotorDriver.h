@@ -6,7 +6,8 @@
 class MotorDriver {
     public:
         virtual void init() = 0;
-        virtual void drivemotor(char direction, unsigned char PWM) = 0;
+        virtual void setSpeed(int speed) = 0;
+        virtual ~MotorDriver() {}
 };
 
 #endif
