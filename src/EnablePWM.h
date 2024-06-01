@@ -7,7 +7,7 @@ class EnablePWM : public MotorDriver{
     public:
         EnablePWM(char en, char in1, char in2);
         void init() override;
-        void setSpeed(int speed) override;
+        void setSpeedPWM(int speed) override;
     private:
         char _en;
         char _in1;

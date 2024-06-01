@@ -7,7 +7,7 @@ class DualPWM : public MotorDriver {
     public:
         DualPWM(char PWM1, char PWM2);
         void init() override;
-        void setSpeed(int speed) override;
+        void setSpeedPWM(int speed) override;
     private:
         char _PWM1;
         char _PWM2;

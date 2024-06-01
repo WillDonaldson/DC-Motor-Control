@@ -12,8 +12,8 @@ void setup() {
 }
 
 void loop() {
-  myMotor.setSpeed(100);  
+  myMotor.setSpeedPWM(100);  
   delay(1000);
-  myMotor.setSpeed(-180);
+  myMotor.setSpeedPWM(-180);
   delay(1000);
 }

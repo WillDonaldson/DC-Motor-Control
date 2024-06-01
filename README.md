@@ -29,43 +29,56 @@ See `examples/` for more detailed usage examples.
 | DualPWM      | DBH-12V      | Arduino Nano | ✅     | 31-05-2024  |
 | EnablePWM    | L298N        | Arduino Nano | ✅     | 31-05-2024  |
 
-## Future Features
+## Development Plan
 
-Encoder class: initially only handle a quadrature encoder, but potentially expand to single channel encoder (assuming the motor direction is always known), and an option for a Z-channel input
+Following outlines the planned functionality of this library as it is developed
 
-Velocity PID controller: merging encoder and motors to maintain setpoint speeds
+#### Motor Class:
 
-Positional PID Controller
+* **stop()**: Immediately stop motors.
+* **setMinPWM(int minPWM)**: Set the minimum PWM speed.
+* **setMaxPWM(int maxPWM)**: Set the maximum PWM speed.
+* **setSpeedPWM(int speed)**: Set the motor speed using PWM values.
+* **getPWM()**: Read the current PWM value of the motor.
+* **rampSpeedPWM(int startSpeed, int endSpeed, int duration=-1)**: Ramp motor speed from `startSpeed` to `endSpeed` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
+* **setAccelerationProfile(int profile)**: Set different acceleration profiles such as linear, exponential, logarithmic, etc.
 
-setMinPWM(): By default, min PWM is zero, but some most motors will stall out below a certain threshold. The function could set the minimum PWM speed.
+#### Encoder Class*:
 
-setMaxPWM(): Similar to setMinPWM()
+* **getPulses()**: Get the current count of pulses from the encoder.
+* **getRPM()**: Get the current RPM of the motor.
+* **getAngle(bool absolute = false)**: Get the current angle of the motor. If `absolute` is false, the angle is measured relative to the home position within the range (-180, 180] degrees. If `absolute` is true, the angle is measured from the absolute home position, and the range is unbounded.
+* **getDir()**: Get the direction of rotation.
+* **zeroEncoder()**: Set the current pulse and angle as zero.
 
-brake(): short motor terminals - dependent on motor driver hardware features, may be hard to introduce generally
+**initially will only handle a quadrature encoders, but can potentially be expanded to single channel encoder (assuming the motor direction is always known), and Z-channel input encoders.*
 
-smoothTimeStop(int timeSeconds): come to a stop in a set amount of seconds. Requires knowing the current speed of the motor
+#### Velocity PID Contoller:
 
-accelerateToSpeed(int setpointSpeed, int accelerationRate, bool useEncoder = False): accelerate (or decelerate) to a setpoint speed. If useEncoder == False, use PWM values for setpointSpeedand accelerationRate. If useEncoder == True, use RPM values for setpointSpeedand accelerationRate to send a moving setpoint value to setSpeedPID().
+* **setMinVelocity(int minRPM)**: Set the minimum RPM.
+* **setMaxVelocity(int maxRPM)**: Set the maximum RPM.
+* **setVelocityPID(int setpointRPM)**: Set the desired RPM using a PID controller.
+* **rampVelocityPID(int startRPM, int endRPM, int duration=-1)**: Ramp motor velocity from `startRPM` to `endRPM` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
+* **setVelocityPID(float Kp, float Ki, float Kd)**: Set PID constants for velocity control.
+* **getVelocityPID()**: Get the current PID settings for velocity control.
+* **isStalled()**: Detect if the motor is stalled when it has been commanded to move.
+* **findStallPWM()**: Automatically cycle through low PWM setpoints to find the threshold at which the motor stalls.
+* **findStallVelocity()**: Automatically cycle through low RPM setpoints to find the threshold at which the motor stalls.
 
-setSpeedPID(int setpointSpeed): requires encoder, use a PID loop to reach and maintain a desired setPoint
+#### Positional PID Controller:
 
-getPWM(): read current PWM value of motor
+* **moveHome(bool absolute = false)**: Move to the zero position. If `absolute` is false, the movement is within the range (-180, 180] degrees relative to the home position. If `absolute` is true, the movement is unbounded and moves to the absolute home position.
+* **moveAngle(int startAngle, int endAngle, int duration=-1, bool absolute = false)**: Rotate to a given angle from `startAngle` to `endAngle` over `duration` milliseconds. If `duration` is -1, move as fast as possible. If `absolute` is false, the movement is within the range (-180, 180] degrees relative to the home position. If `absolute` is true, the movement is unbounded and moves to the absolute home position.
+* **movePulses(int pulseCount, int duration=-1)**: Rotate forward/backward by a set number of encoder pulses over `duration` milliseconds. If `duration` is -1, move as fast as possible.
+* **setPositionalPID(float Kp, float Ki, float Kd)**: Set the PID constants for positional control.
+* **getPositionalPID()**: Get the current PID settings for positional control.
 
-getRPM(): read current RPM value of motor
+#### Functionality Not Currently Under Development
 
-getPulses()
-
-getAngle()
-
-getDir(): assuming quadrature encoder is attached, use it to check rotation direction
-
-movePulses(int pulseCount): rotate forward/backwards a set number of encoder pulses from the current position. Optionally utilize a positional PID loop
-
-zeroEncoder(): zero the encoder pulse count based on current motor position (may require external limit switch/Z-channel encoder to trigger in desired location)
-
-homeEncoder(): move to zero position. Optionally utilize a positional PID loop
-
-moveAngle(): assuming zeroEncoder() has set a home position, move to a given angle relative to home. Optionally utilize a positional PID loop
+* **autoTuneVelocityPID() and autoTunePositionalPID()**: These functions may be developed after completing the core library.
+* **autoCalibrateEncoder()**: Library assumes pulses/revolution are known from the manufacturer.
+* **Hardware-Specific Functionality**: Including motor braking and coasting, which is only available on certain motor driver configurations.
+* **Current Monitoring and Control**: Not currently planned for development.
 
 ## License
 
