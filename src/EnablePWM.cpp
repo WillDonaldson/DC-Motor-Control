@@ -13,8 +13,7 @@ void EnablePWM::init(){
     pinMode(_in2, OUTPUT);
 }
 
-void EnablePWM::setSpeedPWM(int speed){
-    speed = constrain(speed, -255, 255);
+void EnablePWM::updateSpeedPWM(int speed){
     analogWrite(_en, abs(speed));
     digitalWrite(_in1, speed >= 0 ? HIGH : LOW);
     digitalWrite(_in2, speed >= 0 ? LOW : HIGH);

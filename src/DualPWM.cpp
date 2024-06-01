@@ -11,8 +11,7 @@ void DualPWM::init() {
     pinMode(_PWM2, OUTPUT);
 }
 
-void DualPWM::setSpeedPWM(int speed){
-    speed = constrain(speed, -255, 255);
+void DualPWM::updateSpeedPWM(int speed){
     analogWrite(_PWM1, speed >= 0 ? abs(speed) : 0);
     analogWrite(_PWM2, speed >= 0 ? 0 : abs(speed));
 }

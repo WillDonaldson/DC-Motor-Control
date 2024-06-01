@@ -11,8 +11,7 @@ void SinglePWM::init(){
     pinMode(_PWM, OUTPUT);
 }
 
-void SinglePWM::setSpeedPWM(int speed){
-    speed = constrain(speed, -255, 255);
+void SinglePWM::updateSpeedPWM(int speed){
     digitalWrite(_Dir, speed >= 0 ? HIGH : LOW);
     analogWrite(_PWM, abs(speed));
 }

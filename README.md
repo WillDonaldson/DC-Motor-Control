@@ -36,8 +36,8 @@ Following outlines the planned functionality of this library as it is developed
 #### Motor Class:
 
 * **stop()**: Immediately stop motors.
-* **setMinPWM(int minPWM)**: Set the minimum PWM speed.
-* **setMaxPWM(int maxPWM)**: Set the maximum PWM speed.
+* **setMinPWM(int PWM)**: Set the minimum PWM speed.
+* **setMaxPWM(int PWM)**: Set the maximum PWM speed.
 * **setSpeedPWM(int speed)**: Set the motor speed using PWM values.
 * **getPWM()**: Read the current PWM value of the motor.
 * **rampSpeedPWM(int startSpeed, int endSpeed, int duration=-1)**: Ramp motor speed from `startSpeed` to `endSpeed` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
