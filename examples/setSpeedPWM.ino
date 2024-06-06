@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 #include "SinglePWM.h"
 #include "DualPWM.h"
 #include "EnablePWM.h"

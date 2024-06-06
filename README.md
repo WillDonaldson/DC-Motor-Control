@@ -36,12 +36,18 @@ Following outlines the planned functionality of this library as it is developed
 #### Motor Class:
 
 * **setSpeedPWM(int speed)**: Set the motor speed using PWM values.
-* **stop()**: Immediately stop motors.
-* **getPWM()**: Read the current PWM value of the motor.
-* **setMinPWM(int PWM)**: Set the minimum PWM speed.
-* **setMaxPWM(int PWM)**: Set the maximum PWM speed.
-* **rampSpeedPWM(int startSpeed, int endSpeed, int duration=-1)**: Ramp motor speed from `startSpeed` to `endSpeed` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
-* **setAccelerationProfile(int profile)**: Set different acceleration profiles such as linear, exponential, logarithmic, etc.
+* **stop()**: Stop the motor immediately by setting speed to 0.
+* **getPWM()**: Gets the current PWM value of the motor.
+* **setMinPWM(int PWM)**: Sets the minimum PWM value for the motor.
+* **setMaxPWM(int PWM)**:Sets the maximum PWM value for the motor.
+* **initializeRampPWM(int endSpeed, long duration = 0, char accelerationProfile = 1)**: Initializes a PWM ramp to smoothly transition the motor speed from the current speed to the specified end speed over a given duration.
+* **rampPWM()**: Executes the PWM ramp operation to gradually change the motor speed based on the initialized ramp parameters.
+* **setAccelerationProfile(char profile)**: Sets the acceleration profile for the ramp operation.
+* **handleError(MotorDriverError error)**: Handles errors and warnings related to motor driver operations.
+
+Future development:
+
+* **kickPWM()**: Provide a short pulse (~100ms) at maxPWM to overcome inertia to drive at very low PWM speeds.
 
 #### Encoder Class*:
 
@@ -58,7 +64,7 @@ Following outlines the planned functionality of this library as it is developed
 * **setMinVelocity(int minRPM)**: Set the minimum RPM.
 * **setMaxVelocity(int maxRPM)**: Set the maximum RPM.
 * **setVelocityPID(int setpointRPM)**: Set the desired RPM using a PID controller.
-* **rampVelocityPID(int startRPM, int endRPM, int duration=-1)**: Ramp motor velocity from `startRPM` to `endRPM` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
+* **rampVelocityPID(int startRPM, int endRPM, unsigned long duration=-1)**: Ramp motor velocity from `startRPM` to `endRPM` over `duration` milliseconds. If `duration` is -1, move as fast as possible.
 * **setVelocityPID(float Kp, float Ki, float Kd)**: Set PID constants for velocity control.
 * **getVelocityPID()**: Get the current PID settings for velocity control.
 * **isStalled()**: Detect if the motor is stalled when it has been commanded to move.
@@ -68,8 +74,8 @@ Following outlines the planned functionality of this library as it is developed
 #### Positional PID Controller:
 
 * **moveHome(bool absolute = false)**: Move to the zero position. If `absolute` is false, the movement is within the range (-180, 180] degrees relative to the home position. If `absolute` is true, the movement is unbounded and moves to the absolute home position.
-* **moveAngle(int startAngle, int endAngle, int duration=-1, bool absolute = false)**: Rotate to a given angle from `startAngle` to `endAngle` over `duration` milliseconds. If `duration` is -1, move as fast as possible. If `absolute` is false, the movement is within the range (-180, 180] degrees relative to the home position. If `absolute` is true, the movement is unbounded and moves to the absolute home position.
-* **movePulses(int pulseCount, int duration=-1)**: Rotate forward/backward by a set number of encoder pulses over `duration` milliseconds. If `duration` is -1, move as fast as possible.
+* **moveAngle(int startAngle, int endAngle, unsigned long duration=-1, bool absolute = false)**: Rotate to a given angle from `startAngle` to `endAngle` over `duration` milliseconds. If `duration` is -1, move as fast as possible. If `absolute` is false, the movement is within the range (-180, 180] degrees relative to the home position. If `absolute` is true, the movement is unbounded and moves to the absolute home position.
+* **movePulses(int pulseCount, unsigned long duration=-1)**: Rotate forward/backward by a set number of encoder pulses over `duration` milliseconds. If `duration` is -1, move as fast as possible.
 * **setPositionalPID(float Kp, float Ki, float Kd)**: Set the PID constants for positional control.
 * **getPositionalPID()**: Get the current PID settings for positional control.
 
@@ -78,6 +84,7 @@ Following outlines the planned functionality of this library as it is developed
 * **autoTuneVelocityPID() and autoTunePositionalPID()**: These functions may be developed after completing the core library.
 * **autoCalibrateEncoder()**: Library assumes pulses/revolution are known from the manufacturer.
 * **Hardware-Specific Functionality**: Including motor braking and coasting, which is only available on certain motor driver configurations.
+* **Change Motor Driver PWM Frequency**: not available on all micro controllers/motor drivers
 * **Current Monitoring and Control**: Not currently planned for development.
 
 ## License
